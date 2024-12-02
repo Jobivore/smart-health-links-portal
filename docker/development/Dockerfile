@@ -1,4 +1,7 @@
 FROM node:18-alpine AS base
+
+RUN npm cache clean --force
+
 RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 COPY package*.json ./
@@ -7,6 +10,9 @@ EXPOSE 3000
 FROM base AS builder
 WORKDIR /app
 COPY . .
+
+COPY ./prisma ./prisma
+
 RUN npm run build
 
 
